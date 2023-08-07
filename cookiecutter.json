@@ -3,5 +3,6 @@
     "role_name": "",
     "description": "",
     "author": "",
-    "author_website": ""
+    "author_website": "",
+    "min_ansible_version": "2.10"
 }

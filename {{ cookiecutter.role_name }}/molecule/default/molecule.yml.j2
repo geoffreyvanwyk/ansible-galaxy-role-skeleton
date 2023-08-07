@@ -15,8 +15,21 @@
 # Ansible role {{ cookiecutter.namespace }}.{{ cookiecutter.role_name }}. If not, see <https://www.gnu.org/licenses/>.
 
 ##
-# Tasks that run when notified by tasks that changed the managed node.
+#  The central configuration entrypoint for Molecule.
 #
 # @copyright  {% now 'utc', '%Y' %} {{ cookiecutter.author }} ({{ cookiecutter.author_website }})
-# @see        Handlers: running operations on change {@link https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#handlers}
+# @see        The Scenario Layout {@link https://ansible.readthedocs.io/projects/molecule/getting-started/#the-scenario-layout}
 ##
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include lorem.ipsum"
-      include_role:
-        name: "lorem.ipsum"
+    - name: "Include {{ cookiecutter.namespace }}.{{ cookiecutter.role_name }}"
+      ansible.builtin.include_role:
+        name: "{{ cookiecutter.namespace }}.{{ cookiecutter.role_name }}"

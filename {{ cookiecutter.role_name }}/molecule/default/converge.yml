@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include lorem.ipsum"
+      include_role:
+        name: "lorem.ipsum"

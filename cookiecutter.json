@@ -4,5 +4,6 @@
     "description": "",
     "author": "",
     "author_website": "",
-    "min_ansible_version": "2.10"
+    "min_ansible_version": "2.10",
+    "issue_tracker_url": ""
 }

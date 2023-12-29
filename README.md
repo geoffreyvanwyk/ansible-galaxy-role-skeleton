@@ -1,3 +1,5 @@
+![](https://banners.beyondco.de/Cookiecutter%20for%20Ansible%20Role.png?theme=light&packageManager=&packageName=cookiecutter+gh%3Ageoffreyvanwyk%2Fcookiecutter-ansible-role&pattern=architect&style=style_1&description=All+you+need+to+start+automating%21&md=1&showWatermark=1&fontSize=125px&images=star)
+
 # Cookiecutter for Ansible Role
 
 A cookiecutter for Ansible roles with Molecule, GitHub Actions for testing with Molecule and publishing to Ansible Galaxy, license file and copyright notices.

@@ -13,7 +13,7 @@ pip install -U cookiecutter
 Create a project skeleton for a new Ansible role.
 
 ```shell
-cookiecutter https://github.com/geoffreyvanwyk/cookiecutter-for-ansible-role
+cookiecutter gh:geoffreyvanwyk/cookiecutter-ansible-role
 ```
 
 ## License

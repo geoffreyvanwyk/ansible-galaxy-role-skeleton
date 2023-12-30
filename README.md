@@ -5,23 +5,30 @@
 A [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) for
 [Ansible](https:/docs.ansible.com/ansible/latest) roles with:
 
+* a **requirements.txt** file containing the required Python packages;
 * initialized [Molecule](https://ansible.readthedocs.io/projects/molecule)
   directory for testing;
 * [GitHub Actions](https://docs.github.com/en/actions) workflow for running
   [YAML Lint](https://yamllint.readthedocs.io/en/stable/),
-  [AnsibleLint](https://ansible.readthedocs.io/projects/lint) and Molecule for
+  [Ansible Lint](https://ansible.readthedocs.io/projects/lint) and Molecule for
   continuous integration;
 * GitHub Actions workflow for publishing the role to
   [Ansible Galaxy](https://galaxy.ansible.com);
-* a _COPYING_ file containing the copyright license for the role; and
+* a **COPYING** file containing the copyright license for the role; and
 * a license notice at the top of each file.
 
 ## Usage
 
+Install the `pip` package manager for Python.
+
+```shell
+sudo apt install --yes python3-pip
+```
+
 Install the Cookiecutter package.
 
 ```shell
-pip install -U cookiecutter
+pip install cookiecutter
 ```
 
 Create a project skeleton for a new Ansible role.
@@ -30,12 +37,39 @@ Create a project skeleton for a new Ansible role.
 cookiecutter gh:geoffreyvanwyk/cookiecutter-ansible-role
 ```
 
+The command above will prompt for the namespace and name of the role, among
+other things, then it will create a directory within the current working
+directory, named after the role.
+
+Change into the new directory, then install the required Python packages.
+
+```shell
+cd <new-role-directory>
+pip install --requirement requirements.txt
+```
+
+If you have already installed the Docker Engine (if not, see
+_Testing with Molecule_ section of the README below) and the Docker service is
+running:
+
+```shell
+sudo service docker status
+```
+
+You can now confirm that all Molecule tests pass at this stage.
+
+```shell
+molecule test
+```
+
+After this, you are ready to start building your Ansible role.
+
 ## How to use Features
 
 ### Testing with Molecule
 
 To use Molecule, first install
-[Docker](https://docs.docker.com/engine/install/ubuntu/) and run it as a
+[Docker Engine](https://docs.docker.com/engine/install/ubuntu/) then run it as a
 service.
 
 ```shell
@@ -50,9 +84,12 @@ your GitHub repository
 (_Security > Secrets and variables > Actions > Secrets > Repository secrets_)
 as `GALAXY_API_KEY`.
 
+When you are ready to publish, add a Git tag to the last commit. The tag name
+must start with a `v`.
+
 ## License
 
-Copyright &copy; 2023 Geoffrey Bernardo van Wyk [(https://geoffreyvanwyk.dev)](https://geoffreyvanwyk.dev)
+Copyright &copy; 2023 Geoffrey Bernardo van Wyk (<https://geoffreyvanwyk.dev>)
 
 This file is part of Cookiecutter for Ansible role.
 

@@ -19,13 +19,16 @@ A [cookiecutter](https://cookiecutter.readthedocs.io/en/stable/) for
 
 ## Usage
 
+[![asciicast](https://asciinema.org/a/630021.svg)](https://asciinema.org/a/630021)
+
 Install the `pip` package manager for Python.
 
 ```shell
 sudo apt install --yes python3-pip
 ```
 
-Install the Cookiecutter package.
+Install the Cookiecutter package (preferably create a Python virtual environment
+beforehand).
 
 ```shell
 pip install cookiecutter

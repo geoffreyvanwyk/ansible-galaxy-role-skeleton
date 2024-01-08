@@ -166,7 +166,9 @@ jobs:
           python-version: "3.x"
 
       - name: Install test dependencies
-        run: pip3 install --requirement requirements.txt
+        run: |
+          cd ansible-role-widgets_service_installer
+          pip3 install --requirement requirements.txt
 
       - name: Run Molecule tests
         run: |

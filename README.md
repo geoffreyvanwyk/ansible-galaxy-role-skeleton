@@ -90,6 +90,21 @@ as `GALAXY_API_KEY`.
 When you are ready to publish, add a Git tag to the last commit. The tag name
 must start with a `v`.
 
+## Contributing
+
+To contribute to this repository, please use the [Conventional
+Commits](https://conventionalcommits.org) convention. It makes it easier to
+create change logs for new releases.
+
+The commits are linted using [Commit Lint](https://commitlint.js.org/#/)
+whenever a pull request is made.
+
+To have the Commit Lint check your commits locally as a commit-msg hook, run
+`npm install` after cloning this repository. If you are using Visual Studio
+Code, you can also install the Commit Lint extension recommended by this
+repository, to lint your commits as you write them in the Source Control panel
+of VS Code.
+
 ## License
 
 Copyright &copy; 2023 Geoffrey Bernardo van Wyk (<https://geoffreyvanwyk.dev>)

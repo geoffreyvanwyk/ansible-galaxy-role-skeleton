@@ -2,11 +2,14 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.4",
     "@commitlint/config-conventional": "^18.4.4",
+    "commit-and-tag-version": "^12.1.0",
     "husky": "^8.0.3"
   },
   "scripts": {
     "prepare": "husky install",
     "lint-commit-msg": "commitlint --edit",
-    "commitlint": "commitlint"
-  }
+    "commitlint": "commitlint",
+    "release": "commit-and-tag-version"
+  },
+  "version": "3.1.0"
 }

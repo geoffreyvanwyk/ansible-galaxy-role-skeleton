@@ -121,7 +121,7 @@ jobs:
           cd ansible-role-widgets_service_installer
           yamllint .
 
-  ansible-lint:
+  ansiblelint:
     name: Ansible Lint
     needs: yamllint
     runs-on: ubuntu-22.04
@@ -149,8 +149,8 @@ jobs:
           ansible-lint .
 
   molecule:
-    name: Molecule
-    needs: ansible-lint
+    name: Molecule Test
+    needs: ansiblelint
     runs-on: ubuntu-22.04
 
     steps:

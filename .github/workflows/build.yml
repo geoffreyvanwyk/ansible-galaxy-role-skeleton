@@ -11,7 +11,7 @@ on:
 jobs:
   commitlint:
     name: Commit Lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Check out the codebase
@@ -44,3 +44,131 @@ jobs:
           --from=${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }}
           --to=${{ github.event.pull_request.head.sha }}
           --verbose
+
+  createrole:
+    name: Create role
+    needs: commitlint
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out the codebase
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Cookiecutter
+        run: pip install cookiecutter
+
+      - name: Fill in template values
+        run: |
+          sudo apt install --yes jq
+          jq '.namespace |= "acme"' cookiecutter.json > namespace.json
+          jq '.role_name |= "widgets"' namespace.json > widgets.json
+          jq '.description |= "Installs web service"' widgets.json > description.json
+          jq '.author |= "John Doe"' description.json > author.json
+          jq '.author_website |= "https://www.example.com"' author.json > author_website.json
+          cat author_website.json
+          rm cookiecutter.json
+          mv author_website.json cookiecutter.json
+          rm namespace.json widgets.json description.json author.json
+
+      - name: Create role
+        run: |
+          cd ..
+          pwd
+          ls
+          cookiecutter cookiecutter-ansible-role --no-input
+          ls
+          sudo apt install --yes tree
+          tree -L 2 widgets
+          cat widgets/meta/main.yml
+          mv widgets cookiecutter-ansible-role
+
+      - name: Upload role artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ansible-role-widgets
+          path: widgets
+          retention-days: 1
+
+  yamllint:
+    name: YAML Lint
+    needs: createrole
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ansible-role-widgets
+          path: ansible-role-widgets
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: |
+          cd ansible-role-widgets
+          pip3 install --requirement requirements.txt
+
+      - name: Lint code
+        run: |
+          cd ansible-role-widgets
+          yamllint .
+
+  ansible-lint:
+    name: Ansible Lint
+    needs: yamllint
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ansible-role-widgets
+          path: ansible-role-widgets
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: |
+          cd ansible-role-widgets
+          pip3 install --requirement requirements.txt
+
+      - name: Lint code
+        run: |
+          cd ansible-role-widgets
+          ansible-lint .
+
+  molecule:
+    name: Molecule
+    needs: ansible-lint
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ansible-role-widgets
+          path: ansible-role-widgets
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: pip3 install --requirement requirements.txt
+
+      - name: Run Molecule tests
+        run: |
+          cd ansible-role-widgets
+          molecule test

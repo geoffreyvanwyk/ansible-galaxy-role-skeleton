@@ -94,9 +94,35 @@ jobs:
           path: widgets_service_installer
           retention-days: 1
 
+  actionlint:
+    name: GitHub Actions Workflows Lint
+    needs: createrole
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ansible-role-widgets_service_installer
+          path: ansible-role-widgets_service_installer
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+
+      - name: Set up linter
+        run: go install github.com/rhysd/actionlint/cmd/actionlint@latest
+
+      - name: Lint workflows
+        run: |
+          cd ansible-role-widgets_service_installer
+          sudo apt install --yes tree
+          tree -a -L 3
+          cat .github/workflows/publish.yml
+          actionlint .github/workflows/{build.yml,publish.yml}
+
   yamllint:
     name: YAML Lint
-    needs: createrole
+    needs: actionlint
     runs-on: ubuntu-22.04
 
     steps:

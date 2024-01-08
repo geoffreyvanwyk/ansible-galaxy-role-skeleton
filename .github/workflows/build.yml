@@ -66,14 +66,14 @@ jobs:
         run: |
           sudo apt install --yes jq
           jq '.namespace |= "acme"' cookiecutter.json > namespace.json
-          jq '.role_name |= "widgets"' namespace.json > widgets.json
-          jq '.description |= "Installs web service"' widgets.json > description.json
+          jq '.role_name |= "widgets_service_installer"' namespace.json > widgets_service_installer.json
+          jq '.description |= "Installs web service"' widgets_service_installer.json > description.json
           jq '.author |= "John Doe"' description.json > author.json
           jq '.author_website |= "https://www.example.com"' author.json > author_website.json
           cat author_website.json
           rm cookiecutter.json
           mv author_website.json cookiecutter.json
-          rm namespace.json widgets.json description.json author.json
+          rm namespace.json widgets_service_installer.json description.json author.json
 
       - name: Create role
         run: |
@@ -83,15 +83,15 @@ jobs:
           cookiecutter cookiecutter-ansible-role --no-input
           ls
           sudo apt install --yes tree
-          tree -L 2 widgets
-          cat widgets/meta/main.yml
-          mv widgets cookiecutter-ansible-role
+          tree -L 2 widgets_service_installer
+          cat widgets_service_installer/meta/main.yml
+          mv widgets_service_installer cookiecutter-ansible-role
 
       - name: Upload role artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ansible-role-widgets
-          path: widgets
+          name: ansible-role-widgets_service_installer
+          path: widgets_service_installer
           retention-days: 1
 
   yamllint:
@@ -103,8 +103,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ansible-role-widgets
-          path: ansible-role-widgets
+          name: ansible-role-widgets_service_installer
+          path: ansible-role-widgets_service_installer
 
       - name: Set up Python 3
         uses: actions/setup-python@v2
@@ -113,12 +113,12 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          cd ansible-role-widgets
+          cd ansible-role-widgets_service_installer
           pip3 install --requirement requirements.txt
 
       - name: Lint code
         run: |
-          cd ansible-role-widgets
+          cd ansible-role-widgets_service_installer
           yamllint .
 
   ansible-lint:
@@ -130,8 +130,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ansible-role-widgets
-          path: ansible-role-widgets
+          name: ansible-role-widgets_service_installer
+          path: ansible-role-widgets_service_installer
 
       - name: Set up Python 3
         uses: actions/setup-python@v2
@@ -140,12 +140,12 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          cd ansible-role-widgets
+          cd ansible-role-widgets_service_installer
           pip3 install --requirement requirements.txt
 
       - name: Lint code
         run: |
-          cd ansible-role-widgets
+          cd ansible-role-widgets_service_installer
           ansible-lint .
 
   molecule:
@@ -157,8 +157,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: ansible-role-widgets
-          path: ansible-role-widgets
+          name: ansible-role-widgets_service_installer
+          path: ansible-role-widgets_service_installer
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
@@ -170,5 +170,5 @@ jobs:
 
       - name: Run Molecule tests
         run: |
-          cd ansible-role-widgets
+          cd ansible-role-widgets_service_installer
           molecule test
